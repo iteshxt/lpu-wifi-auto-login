@@ -6,10 +6,12 @@
     "permissions": [
       "storage",
       "scripting",
-      "activeTab"
+      "activeTab",
+      "alarms"
     ],
     "host_permissions": [
-      "https://internet.lpu.in/*"
+      "https://internet.lpu.in/*",
+      "http://clients3.google.com/*"
     ],
     "action": {
       "default_popup": "popup.html",

@@ -1,8 +1,8 @@
 const LOGIN_URL = 'https://internet.lpu.in/24online/webpages/client.jsp';
-let CHECK_INTERVAL = 5 * 60 * 1000; 
+const LOGOUT_URL = 'https://internet.lpu.in/24online/servlet/E24onlineHTTPClient';
+let CHECK_INTERVAL = 5; // in minutes
 
 let loginInProgress = false;
-let intervalId = null;
 
 // Obfuscator
 const Obfuscator = {
@@ -24,18 +24,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     } else if (message.action === 'checkStatus') {
         checkConnectionStatus().then(status => sendResponse({ status }));
         return true;
+    } else if (message.action === 'logoutWifi') {
+        performLogout().then(status => sendResponse({ status }));
+        return true;
     } else if (message.action === 'updateInterval') {
-        const minutes = message.minutes;
-        CHECK_INTERVAL = minutes * 60 * 1000;
-        
-        if (intervalId) {
-            clearInterval(intervalId);
-        }
-        intervalId = setInterval(performLogin, CHECK_INTERVAL);
+        const minutes = parseInt(message.minutes);
+        CHECK_INTERVAL = minutes;
         
         chrome.storage.local.set({ checkInterval: minutes });
+        chrome.alarms.create('checkConnection', { periodInMinutes: minutes });
+        
         console.log(`Check interval updated to ${minutes} minutes`);
         sendResponse({ status: 'updated' });
+    }
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === 'checkConnection') {
+        performLogin();
     }
 });
 
@@ -45,6 +51,12 @@ async function performLogin(isManual = false) {
     }
     
     loginInProgress = true;
+    
+    if (isManual) {
+        chrome.alarms.get('checkConnection', (alarm) => {
+            if (!alarm) initializeInterval();
+        });
+    }
     
     try {
         const data = await chrome.storage.local.get('credentials');
@@ -57,10 +69,12 @@ async function performLogin(isManual = false) {
         const password = Obfuscator.decode(data.credentials.password);
 
         try {
-            const response = await fetch(LOGIN_URL, { cache: "no-store", method: 'GET' });
-            const html = await response.text();
-
-            if (html.includes('logout.jsp')) {
+            const response = await fetch('http://clients3.google.com/generate_204', { 
+                cache: "no-store", 
+                method: 'GET',
+                signal: AbortSignal.timeout(3000) 
+            });
+            if (response.status === 204) {
                 console.log('Already logged in');
                 loginInProgress = false;
                 return 'already_logged_in';
@@ -103,14 +117,17 @@ async function performLogin(isManual = false) {
 
 async function checkConnectionStatus() {
     try {
-        const response = await fetch(LOGIN_URL, { cache: "no-store", method: 'GET' });
-        const html = await response.text();
-        if (html.includes('logout.jsp')) {
+        const response = await fetch('http://clients3.google.com/generate_204', { 
+            cache: "no-store", 
+            method: 'GET',
+            signal: AbortSignal.timeout(3000) 
+        });
+        if (response.status === 204) {
             return 'connected';
         }
         return 'disconnected';
     } catch(e) {
-        return 'error';
+        return 'disconnected';
     }
 }
 
@@ -123,19 +140,64 @@ function loginToWifi(regno, password) {
     document.querySelector('#loginbtn')?.click();
 }
 
+async function performLogout() {
+    chrome.alarms.clear('checkConnection');
+
+    return new Promise((resolve) => {
+        chrome.tabs.create({ url: LOGOUT_URL, active: false }, async (tab) => {
+            try {
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    function: logoutOfWifi
+                });
+
+                setTimeout(() => {
+                    chrome.tabs.get(tab.id, function() {
+                        if (!chrome.runtime.lastError) {
+                            chrome.tabs.remove(tab.id);
+                        }
+                        resolve('logged_out');
+                    });
+                }, 2000);
+            } catch (error) {
+                console.error('Logout script execution error:', error);
+                resolve('error');
+            }
+        });
+    });
+}
+
+function logoutOfWifi() {
+    const form = document.querySelector('form');
+    const logoutBtn = document.querySelector('input[name="logout"]');
+    
+    if (form && logoutBtn) {
+        // Many 24online captive portals have broken SSL certificates for their internal 10.10.0.1 IP
+        // Forcing HTTP avoids the 'Your connection is not private' (NET::ERR_CERT_COMMON_NAME_INVALID) error
+        if (form.action && form.action.includes('https://10.10.0.1')) {
+            form.action = form.action.replace('https://10.10.0.1', 'http://10.10.0.1');
+        }
+        
+        // The onclick attribute triggers validateLogout() which often shoots a confirm() dialog.
+        // Alert/Confirm dialogs freeze background tabs indefinitely, so we bypass it.
+        logoutBtn.removeAttribute('onclick');
+        
+        form.submit();
+    }
+}
+
 async function initializeInterval() {
     try {
         const data = await chrome.storage.local.get('checkInterval');
-        if (data.checkInterval) {
-            CHECK_INTERVAL = data.checkInterval * 60 * 1000;
-        } else {
-            chrome.storage.local.set({ checkInterval: 5 });
+        CHECK_INTERVAL = data.checkInterval ? parseInt(data.checkInterval) : 5;
+        
+        if (!data.checkInterval) {
+            chrome.storage.local.set({ checkInterval: CHECK_INTERVAL });
         }
         
-        if (intervalId) clearInterval(intervalId);
-        intervalId = setInterval(performLogin, CHECK_INTERVAL);
+        chrome.alarms.create('checkConnection', { periodInMinutes: CHECK_INTERVAL });
     } catch (error) {
-        intervalId = setInterval(performLogin, CHECK_INTERVAL);
+        chrome.alarms.create('checkConnection', { periodInMinutes: 5 });
     }
 }
 

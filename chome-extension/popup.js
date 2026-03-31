@@ -148,7 +148,7 @@ document.getElementById('reload').addEventListener('click', () => {
 });
 
 document.getElementById('reset').addEventListener('click', () => {
-  if (confirm('Sign out and remove saved credentials?')) {
+  if (confirm('Remove saved credentials? Auto-login will be disabled permanently until saved again.')) {
     chrome.storage.local.remove('credentials', () => {
       document.getElementById('regno').value = '';
       document.getElementById('password').value = '';
@@ -156,6 +156,33 @@ document.getElementById('reset').addEventListener('click', () => {
       showToast('Credentials removed.');
     });
   }
+});
+
+document.getElementById('logout-wifi').addEventListener('click', () => {
+  const btn = document.getElementById('logout-wifi');
+  btn.disabled = true;
+  btn.textContent = 'Disconnecting...';
+  showToast('Logging out of LPU WiFi...', 0, true);
+  
+  chrome.runtime.sendMessage({ action: 'logoutWifi' }, (response) => {
+    btn.disabled = false;
+    btn.textContent = 'Disconnect WiFi';
+    
+    if (chrome.runtime.lastError) {
+      showToast('Error connecting to background script.');
+      return;
+    }
+    
+    showToast('Successfully disconnected.');
+    updateDashboardStatus('disconnected');
+    
+    // Refresh status to be absolutely sure
+    setTimeout(() => {
+        chrome.runtime.sendMessage({ action: 'checkStatus' }, (res) => {
+          if (!chrome.runtime.lastError && res) updateDashboardStatus(res.status);
+        });
+    }, 2000);
+  });
 });
 
 // Setup Slider

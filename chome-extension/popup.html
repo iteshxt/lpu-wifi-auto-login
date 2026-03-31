@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>LPU WiFi</title>
@@ -27,7 +28,7 @@
       --ring: #d4d4d8;
       --radius: 0.5rem;
     }
-    
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -51,7 +52,7 @@
       padding: 16px;
       border-bottom: 1px solid var(--border);
     }
-    
+
     .header h1 {
       font-size: 16px;
       font-weight: 600;
@@ -92,8 +93,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(2px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(2px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .form-group {
@@ -133,7 +141,7 @@
       margin-top: 8px;
       position: relative;
     }
-    
+
     .slider {
       -webkit-appearance: none;
       appearance: none;
@@ -156,7 +164,7 @@
       border: 1px solid var(--border);
       transition: transform 0.1s;
     }
-    
+
     .slider::-webkit-slider-thumb:active {
       transform: scale(0.9);
     }
@@ -248,9 +256,19 @@
       color: var(--muted-foreground);
     }
 
-    .mt-4 { margin-top: 16px; }
-    .mb-4 { margin-bottom: 16px; }
-    .flex-col { display: flex; flex-direction: column; gap: 8px; }
+    .mt-4 {
+      margin-top: 16px;
+    }
+
+    .mb-4 {
+      margin-bottom: 16px;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
     .dev-info {
       background-color: var(--card);
@@ -260,7 +278,7 @@
       margin-top: 24px;
       font-size: 12px;
     }
-    
+
     .dev-info h4 {
       font-size: 11px;
       text-transform: uppercase;
@@ -268,7 +286,7 @@
       color: var(--muted-foreground);
       margin-bottom: 12px;
     }
-    
+
     .dev-link {
       display: flex;
       align-items: center;
@@ -278,15 +296,15 @@
       text-decoration: none;
       transition: color 0.2s;
     }
-    
+
     .dev-link:last-child {
       margin-bottom: 0;
     }
-    
+
     .dev-link:hover {
       color: var(--foreground);
     }
-    
+
     .dev-link svg {
       width: 14px;
       height: 14px;
@@ -305,13 +323,13 @@
       font-weight: 500;
       transform: translateY(150%);
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       z-index: 50;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    
+
     .toast.show {
       transform: translateY(0);
     }
@@ -320,7 +338,7 @@
       display: inline-block;
       width: 16px;
       height: 16px;
-      border: 2px solid rgba(0,0,0,0.2);
+      border: 2px solid rgba(0, 0, 0, 0.2);
       border-radius: 50%;
       border-top-color: var(--background);
       animation: spin 1s ease-in-out infinite;
@@ -328,7 +346,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     hr {
@@ -338,14 +358,24 @@
     }
   </style>
 </head>
+
 <body>
   <div class="header">
     <h1 id="header-title">LPU WiFi</h1>
     <button class="icon-btn" id="settings-btn" style="display: none;" title="Settings">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
     </button>
     <button class="icon-btn" id="back-btn" style="display: none;" title="Back">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12" />
+        <polyline points="12 19 5 12 12 5" />
+      </svg>
     </button>
   </div>
 
@@ -365,14 +395,32 @@
   <!-- View: Dashboard -->
   <div class="view" id="view-dashboard">
     <div class="status-card" id="status-card">
-      <svg id="status-icon-svg" class="status-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      <svg id="status-icon-svg" class="status-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+        <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+        <line x1="12" y1="20" x2="12.01" y2="20" />
+      </svg>
       <div class="status-title" id="status-title">Auto-Login Active</div>
       <div class="status-desc" id="status-text">Monitoring connection in background.</div>
     </div>
-    
+
     <div class="flex-col">
       <button id="reload" class="btn btn-primary">Refresh Connection</button>
-      <button id="reset" class="btn btn-destructive">Sign Out</button>
+      <button id="logout-wifi" class="btn btn-destructive">Disconnect WiFi</button>
+    </div>
+
+    <div
+      style="text-align: center; margin-top: 24px; font-size: 11px; font-weight: 500; color: var(--muted-foreground); display: flex; align-items: center; justify-content: center; gap: 6px;">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
+      </svg>
+      LPU WIFI Auto-Login by iteshxt
     </div>
   </div>
 
@@ -394,19 +442,37 @@
     </div>
 
     <hr>
-    
+
+    <div class="form-group mb-4">
+      <label>Danger Zone</label>
+      <button id="reset" class="btn btn-destructive">Remove Saved Credentials</button>
+    </div>
+
     <div class="dev-info">
       <h4>Developer Information</h4>
-      <a href="https://iteshxt.me" target="_blank" class="dev-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <div class="dev-link" style="cursor: default; color: var(--foreground);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
         Itesh Tomar
-      </a>
+      </div>
       <a href="https://github.com/iteshxt" target="_blank" class="dev-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+        </svg>
         github.com/iteshxt
       </a>
       <a href="https://iteshxt.me" target="_blank" class="dev-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+          <polyline points="15 3 21 3 21 9" />
+          <line x1="10" y1="14" x2="21" y2="3" />
+        </svg>
         iteshxt.me
       </a>
     </div>
@@ -419,4 +485,5 @@
 
   <script src="popup.js"></script>
 </body>
+
 </html>
