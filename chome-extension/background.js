@@ -35,11 +35,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     } else if (message.action === 'updateInterval') {
         const minutes = parseInt(message.minutes);
         CHECK_INTERVAL = minutes;
-        
         chrome.storage.local.set({ checkInterval: minutes });
         chrome.alarms.create('checkConnection', { periodInMinutes: minutes });
-        
         sendResponse({ status: 'updated' });
+    } else if (message.action === 'runSpeedTest') {
+        runSpeedTest().then(result => sendResponse(result));
+        return true;
     }
 });
 
@@ -86,6 +87,10 @@ async function performLogin(isManual = false) {
                 signal: AbortSignal.timeout(1000)
             });
             if (response.status === 204) {
+                // Mark session start if not already tracking
+                chrome.storage.local.get('sessionStart', (d) => {
+                    if (!d.sessionStart) chrome.storage.local.set({ sessionStart: Date.now() });
+                });
                 loginInProgress = false;
                 return 'already_logged_in';
             }
@@ -93,15 +98,15 @@ async function performLogin(isManual = false) {
              // 204 failed, we are trapped behind the captive portal
         }
 
-        console.log("Sending Request...");
+        console.log(`[LPU Login] Fetching portal page: ${LOGIN_URL}`);
 
         // 3. Fetch Portal HTML (Crucial step to extract dynamically generated variables)
         const getRes = await fetch(LOGIN_URL, { cache: "no-store", method: 'GET' });
         const html = await getRes.text();
 
-        // Failsafe check
+        // Failsafe: if portal already shows logout button, we're already authed
         if (html.includes('value="Logout"') || html.includes('name="logout"')) {
-            console.log("Already Connected");
+            console.log('[LPU Login] Portal indicates already authenticated. Skipping login.');
             loginInProgress = false;
             return 'already_logged_in';
         }
@@ -122,7 +127,8 @@ async function performLogin(isManual = false) {
 
         // 5. Append Credentials & Bypasses
         const formattedRegno = regno.includes('@lpu.com') ? regno : `${regno}@lpu.com`;
-        
+        console.log(`[LPU Login] Submitting credentials for: ${formattedRegno}`);
+
         params.set('mode', '191');
         params.delete('logout');
         params.set('username', formattedRegno);
@@ -133,6 +139,7 @@ async function performLogin(isManual = false) {
         params.set('registercaptcha', 'false');
 
         // 6. Submit Authentication Payload
+        console.log(`[LPU Login] POST → ${AUTH_URL}`);
         const postRes = await fetch(AUTH_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -140,20 +147,28 @@ async function performLogin(isManual = false) {
         });
 
         const postBody = await postRes.text();
+        console.log(`[LPU Login] POST response: HTTP ${postRes.status}, body length: ${postBody.length} chars`);
 
         // 7. Validate Response
-        let finalStatus = 'error';
+        // Note: LPU's portal returns HTTP 200 with an EMPTY body on successful login.
+        // We cannot do an immediate ping here because the portal needs ~1-2s to activate
+        // the session — a premature ping returns 200 (still intercepted), not 204.
+        // The popup's verifyConnectionAfterLogin() handles the delayed connectivity check.
+        let finalStatus;
         if (postBody.includes('value="Logout"') || postBody.includes('Successfully Logged in')) {
-            console.log("Connected");
+            console.log('[LPU Login] Portal confirmed login via response body.');
             finalStatus = 'login_triggered';
         } else if (postBody.includes('Invalid') || postBody.includes('Failure') || postBody.includes('Expired')) {
-            console.log("Login Failed");
+            console.log('[LPU Login] Portal returned failure message in response body.');
             finalStatus = 'login_failed';
         } else {
-            console.log("Status Unknown");
-            finalStatus = 'login_unknown';
+            // Empty body = portal accepted credentials (LPU's portal behaviour).
+            // Treat as triggered; popup will verify connectivity after a delay.
+            console.log(`[LPU Login] Response body empty/inconclusive (${postBody.length} chars). Treating as login_triggered — popup will verify.`);
+            finalStatus = 'login_triggered';
         }
 
+        console.log(`[LPU Login] Final status: ${finalStatus}`);
         loginInProgress = false;
         return finalStatus;
 
@@ -196,6 +211,47 @@ async function initializeInterval() {
     } catch {
         chrome.alarms.create('checkConnection', { periodInMinutes: 1 });
     }
+}
+
+/**
+ * Speed Test — Download (256KB) + Upload (128KB) via Cloudflare
+ */
+async function runSpeedTest() {
+    const result = { download: null, upload: null };
+
+    // Download
+    try {
+        const start = Date.now();
+        const res = await fetch('https://speed.cloudflare.com/__down?bytes=262144', {
+            cache: 'no-store',
+            signal: AbortSignal.timeout(10000)
+        });
+        const buf = await res.arrayBuffer();
+        const secs = (Date.now() - start) / 1000;
+        result.download = ((buf.byteLength * 8) / (secs * 1_000_000)).toFixed(1);
+    } catch (e) {
+        console.log('[SpeedTest] Download failed:', e.message);
+    }
+
+    // Upload
+    try {
+        const payload = new Uint8Array(131072);
+        const start = Date.now();
+        await fetch('https://speed.cloudflare.com/__up', {
+            method: 'POST',
+            body: payload,
+            cache: 'no-store',
+            headers: { 'Content-Type': 'application/octet-stream' },
+            signal: AbortSignal.timeout(10000)
+        });
+        const secs = (Date.now() - start) / 1000;
+        result.upload = ((131072 * 8) / (secs * 1_000_000)).toFixed(1);
+    } catch (e) {
+        console.log('[SpeedTest] Upload failed:', e.message);
+    }
+
+    chrome.storage.local.set({ lastSpeedTest: result });
+    return result;
 }
 
 /**

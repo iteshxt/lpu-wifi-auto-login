@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "LPU WiFi Auto Login",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "Automatically logs into LPU WiFi network",
   "permissions": [
     "storage",
@@ -9,7 +9,8 @@
   ],
   "host_permissions": [
     "https://internet.lpu.in/*",
-    "http://clients3.google.com/*"
+    "http://clients3.google.com/*",
+    "https://speed.cloudflare.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

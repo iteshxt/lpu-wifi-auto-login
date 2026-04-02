@@ -212,23 +212,30 @@
       background-color: var(--secondary);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 24px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
     .status-icon {
-      width: 32px;
-      height: 32px;
-      margin: 0 auto 12px;
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
       color: var(--primary);
       transition: color 0.3s;
+    }
+
+    .status-content {
+      flex: 1;
+      min-width: 0;
     }
 
     .status-title {
       font-size: 14px;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .status-desc {
@@ -236,9 +243,172 @@
       color: var(--muted-foreground);
     }
 
+    .status-timer {
+      font-size: 11px;
+      color: #10b981;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    .bandwidth-card {
+      background-color: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      display: none;
+      flex-direction: row;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .bw-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bw-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted-foreground);
+    }
+
+    .bw-test-btn {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--foreground);
+      color: var(--background);
+      border: none;
+      border-radius: 9999px;
+      padding: 3px 10px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .bw-test-btn:hover { opacity: 0.85; }
+    .bw-test-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .bw-idle {
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+
+    .bw-results {
+      display: none;
+      align-items: center;
+    }
+
+    .bw-item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bw-arrow {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .bw-down { color: #10b981; }
+    .bw-up   { color: #818cf8; }
+
+    .bw-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .bw-speed {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--foreground);
+      white-space: nowrap;
+    }
+
+    .bw-label {
+      font-size: 10px;
+      color: var(--muted-foreground);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .bw-divider {
+      width: 1px;
+      height: 30px;
+      background: var(--border);
+      margin: 0 14px;
+    }
+
+    /* User Profile Card */
+    .profile-card {
+      background: linear-gradient(135deg, #1c1c1f 0%, #27272a 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #2a2a2e;
+      border: 1px solid #3f3f46;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 700;
+      color: #a1a1aa;
+      flex-shrink: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .profile-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .profile-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foreground);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+
+    .profile-regno {
+      font-size: 11px;
+      color: var(--muted-foreground);
+      font-family: 'Courier New', monospace;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .profile-badge {
+      font-size: 10px;
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--muted-foreground);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+
     .footer-brand {
       text-align: center;
-      margin-top: 24px;
+      margin-top: 16px;
       font-size: 11px;
       font-weight: 500;
       color: var(--muted-foreground);
@@ -247,6 +417,66 @@
       justify-content: center;
       gap: 6px;
     }
+
+    /* Settings Page Cards */
+    .settings-card {
+      background-color: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+
+    .settings-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .settings-card-icon {
+      width: 30px;
+      height: 30px;
+      flex-shrink: 0;
+      color: var(--muted-foreground);
+    }
+
+    .settings-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .settings-card-desc {
+      font-size: 11px;
+      color: var(--muted-foreground);
+    }
+
+    .settings-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted-foreground);
+      margin-bottom: 8px;
+      padding-left: 2px;
+    }
+
+    .dev-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--muted-foreground);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+    .dev-row:last-child { border-bottom: none; }
+    .dev-row svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .dev-row.clickable:hover { color: var(--foreground); }
+    .dev-row-label { color: var(--foreground); font-weight: 500; }
 
     .dev-info {
       background-color: var(--card);
@@ -338,6 +568,68 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.92); }
+    }
+
+    /* Confirmation Modal */
+    .confirm-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+    }
+    .confirm-overlay.show {
+      display: flex;
+    }
+    .confirm-dialog {
+      background: #1c1c1f;
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.5);
+      padding: 20px;
+      width: 260px;
+      animation: fadeIn 0.15s ease-in-out;
+    }
+    .confirm-dialog h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .confirm-dialog p {
+      font-size: 12px;
+      color: var(--muted-foreground);
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+    .confirm-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .confirm-actions button {
+      flex: 1;
+      height: 34px;
+      border-radius: var(--radius);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: filter 0.15s;
+    }
+    .confirm-actions button:hover { filter: brightness(0.88); }
+    #confirm-cancel {
+      background: var(--secondary);
+      color: var(--foreground);
+    }
+    #confirm-ok {
+      background: #ef4444;
+      color: #fff;
+    }
   </style>
 </head>
 
@@ -364,6 +656,10 @@
   <!-- View: Login Credentials -->
   <main class="view" id="view-login">
     <div class="form-group">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" placeholder="Enter your full name" autocomplete="off">
+    </div>
+    <div class="form-group">
       <label for="regno">Registration Number</label>
       <input type="text" id="regno" placeholder="Enter registration number" autocomplete="off">
     </div>
@@ -376,6 +672,24 @@
 
   <!-- View: Active Dashboard -->
   <main class="view" id="view-dashboard">
+    <!-- User Profile Card -->
+    <div class="profile-card" id="profile-card">
+      <div class="profile-avatar" id="profile-avatar">?</div>
+      <div class="profile-info">
+        <div class="profile-name" id="profile-name">Loading...</div>
+        <div class="profile-regno" id="profile-regno">—</div>
+      </div>
+      <div class="profile-badge" id="profile-badge">Student</div>
+      <button class="icon-btn" id="signout-btn" title="Sign Out" style="flex-shrink: 0; color: #ef4444;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+      </button>
+    </div>
+
     <div class="status-card" id="status-card">
       <svg id="status-icon-svg" class="status-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -385,11 +699,58 @@
         <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
         <line x1="12" y1="20" x2="12.01" y2="20" />
       </svg>
-      <div class="status-title" id="status-title">Auto-Login Active</div>
-      <div class="status-desc" id="status-text">Monitoring connection in background.</div>
+      <div class="status-content">
+        <div class="status-title" id="status-title">Auto-Login Active</div>
+        <div class="status-desc" id="status-text">Monitoring connection in background.</div>
+        <div class="status-timer" id="status-timer" style="display: none;">
+          Connected for <span id="timer-display">00:00:00</span>
+        </div>
+      </div>
+      <button class="icon-btn" id="reload" title="Connect / Check Status" style="flex-shrink: 0;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+          <path d="M21 3v5h-5" />
+          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+          <path d="M8 16H3v5" />
+        </svg>
+      </button>
     </div>
 
-    <button id="reload" class="btn btn-primary">Connect / Check Status</button>
+    <div class="bandwidth-card" id="bandwidth-card">
+      <div style="flex: 1; min-width: 0;">
+        <div class="bw-title" style="margin-bottom: 8px;">Speed Test</div>
+        <div class="bw-idle" id="bw-idle">Tap to measure your LPU WiFi speed</div>
+        <div class="bw-results" id="bw-results">
+          <div class="bw-item">
+            <div class="bw-arrow bw-down">↓</div>
+            <div class="bw-details">
+              <div class="bw-speed" id="dl-speed">—</div>
+              <div class="bw-label">Download</div>
+            </div>
+          </div>
+          <div class="bw-divider"></div>
+          <div class="bw-item">
+            <div class="bw-arrow bw-up">↑</div>
+            <div class="bw-details">
+              <div class="bw-speed" id="ul-speed">—</div>
+              <div class="bw-label">Upload</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="icon-btn" id="speed-test-btn" title="Run Speed Test" style="flex-shrink: 0; align-self: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+          <path d="M21 3v5h-5" />
+          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+          <path d="M8 16H3v5" />
+        </svg>
+      </button>
+    </div>
+
+
 
     <div class="footer-brand">
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -404,10 +765,22 @@
 
   <!-- View: Configuration Settings -->
   <main class="view" id="view-settings">
-    <div class="form-group">
-      <label>Background Check Interval</label>
+
+    <!-- Interval Card -->
+    <div class="settings-section-label">Preferences</div>
+    <div class="settings-card">
+      <div class="settings-card-header">
+        <svg class="settings-card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+        <div>
+          <div class="settings-card-title">Check Interval</div>
+          <div class="settings-card-desc">How often to re-verify your connection</div>
+        </div>
+      </div>
       <div class="slider-container">
-        <!-- Default explicitly set to index 3 (30 minutes) -->
         <input type="range" min="0" max="4" value="3" class="slider" id="interval-slider">
         <div class="slider-labels">
           <span>1m</span>
@@ -417,36 +790,28 @@
           <span>1h</span>
         </div>
       </div>
-      <div class="status-desc mt-4" style="margin-top: 16px;">How frequently the extension ensures you are connected.</div>
     </div>
 
-    <hr>
-
-    <div class="form-group">
-      <label>Danger Zone</label>
-      <button id="reset" class="btn btn-destructive">Remove Saved Credentials</button>
-    </div>
-
-    <div class="dev-info">
-      <h4>Developer Information</h4>
-      <div class="dev-link dev-name">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+    <!-- Developer Card -->
+    <div class="settings-section-label" style="margin-top: 6px;">About</div>
+    <div class="settings-card">
+      <div class="dev-row">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
           <circle cx="12" cy="7" r="4" />
         </svg>
-        Itesh Tomar
+        <span class="dev-row-label">Itesh Tomar</span>
       </div>
-      <a href="https://github.com/iteshxt" target="_blank" class="dev-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      <a href="https://github.com/iteshxt" target="_blank" class="dev-row clickable">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path
-            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
         </svg>
         github.com/iteshxt
       </a>
-      <a href="https://iteshxt.me" target="_blank" class="dev-link">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+      <a href="https://iteshxt.me" target="_blank" class="dev-row clickable">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
           <polyline points="15 3 21 3 21 9" />
@@ -455,7 +820,29 @@
         iteshxt.me
       </a>
     </div>
+
+    <div class="footer-brand">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+        <path d="M2 17l10 5 10-5" />
+        <path d="M2 12l10 5 10-5" />
+      </svg>
+      LPU WIFI Auto-Login by <a href="https://github.com/iteshxt" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted var(--muted-foreground); transition: color 0.2s;">iteshxt</a>
+    </div>
   </main>
+
+  <!-- Confirm Modal -->
+  <div id="confirm-overlay" class="confirm-overlay">
+    <div class="confirm-dialog">
+      <h3>Sign Out</h3>
+      <p>This will remove your saved credentials. Auto-login will stop until you sign in again.</p>
+      <div class="confirm-actions">
+        <button id="confirm-cancel">Cancel</button>
+        <button id="confirm-ok">Sign Out</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Global Toast Component -->
   <div id="toast" class="toast">
